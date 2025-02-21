@@ -39,7 +39,7 @@ if prompt := st.chat_input("What is up?"):
         st.markdown(prompt)
 
     step1 = client.chat.completions.create(
-        model="gpt-4o",
+        model="ft:gpt-4o-2024-08-06:personal::B3Wn4Vw9",
         messages=[
             {"role": m["role"], "content": m["content"]}
             for m in st.session_state.messages
@@ -60,7 +60,7 @@ if prompt := st.chat_input("What is up?"):
     elif step1.choices[0].to_dict()['message']['content'] == "choice2":
         # Generate a response using the OpenAI API.
         stream = client.chat.completions.create(
-            model="gpt-4o-2024-08-06",
+            model="ft:gpt-4o-2024-08-06:personal::B3Sbf3WW",
             messages=[
                 {"role": m["role"], "content": m["content"]}
                 for m in st.session_state.messages
