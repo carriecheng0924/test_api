@@ -46,6 +46,8 @@ if prompt := st.chat_input("What is up?"):
         ]
     )
 
+    st.warning(step1.choices[0].to_dict()['message']['content'])
+
     if step1.choices[0].to_dict()['message']['content'] == "choice1":
 
         # Generate a response using the OpenAI API.
