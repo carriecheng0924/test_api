@@ -42,8 +42,8 @@ if prompt := st.chat_input("What's up?"):
         model="ft:gpt-4o-2024-08-06:personal::B3Wn4Vw9",
         messages=[
             {"role": "system", "content": "You are a therapist that decides which therapy strategy to treat the patient."},
-                "role": m["role"], "content": m["content"]}
-            for m in st.session_state.messages
+            {"role": st.session_state.messages[1]["role"], "content": st.session_state.messages[1]["content"]}
+            # for m in st.session_state.messages[1]
         ]
     )
 
