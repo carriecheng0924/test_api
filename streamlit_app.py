@@ -43,8 +43,7 @@ if prompt := st.chat_input("What is up?"):
         messages=[
             {"role": m["role"], "content": m["content"]}
             for m in st.session_state.messages
-        ],
-        stream=True,
+        ]
     )
 
     if step1.choices[0].to_dict()['message']['content'] == "choice1":
