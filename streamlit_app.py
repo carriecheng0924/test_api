@@ -38,15 +38,47 @@ if prompt := st.chat_input("What is up?"):
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    # Generate a response using the OpenAI API.
-    stream = client.chat.completions.create(
-        model="ft:gpt-4o-2024-08-06:personal::B3HVAHhr",
+    step1 = client.chat.completions.create(
+        model="gpt-4o",
         messages=[
             {"role": m["role"], "content": m["content"]}
             for m in st.session_state.messages
         ],
         stream=True,
     )
+
+    if step1.choices[0].to_dict()['message']['content'] == "choice1":
+
+        # Generate a response using the OpenAI API.
+        stream = client.chat.completions.create(
+            model="ft:gpt-4o-2024-08-06:personal::B3HVAHhr",
+            messages=[
+                {"role": m["role"], "content": m["content"]}
+                for m in st.session_state.messages
+            ],
+            stream=True,
+        )
+    elif step1.choices[0].to_dict()['message']['content'] == "choice2":
+        # Generate a response using the OpenAI API.
+        stream = client.chat.completions.create(
+            model="gpt-4o-2024-08-06",
+            messages=[
+                {"role": m["role"], "content": m["content"]}
+                for m in st.session_state.messages
+            ],
+            stream=True,
+        )
+
+    else:
+        # Generate a response using the OpenAI API.
+        stream = client.chat.completions.create(
+            model="gpt-4o-2024-08-06",
+            messages=[
+                {"role": m["role"], "content": m["content"]}
+                for m in st.session_state.messages
+            ],
+            stream=True,
+        )
 
     # Stream the response to the chat using `st.write_stream`, then store it in 
     # session state.
