@@ -31,7 +31,7 @@ for message in st.session_state.messages:
 
 # Create a chat input field to allow the user to enter a message. This will display
 # automatically at the bottom of the page.
-if prompt := st.chat_input("You are a therapist that decides which therapy strategy to treat the patient."):
+if prompt := st.chat_input("What's up?"):
 
     # Store and display the current prompt.
     st.session_state.messages.append({"role": "user", "content": prompt})
@@ -41,7 +41,8 @@ if prompt := st.chat_input("You are a therapist that decides which therapy strat
     step1 = client.chat.completions.create(
         model="ft:gpt-4o-2024-08-06:personal::B3Wn4Vw9",
         messages=[
-            {"role": m["role"], "content": m["content"]}
+            {"role": "system", "content": "You are a therapist that decides which therapy strategy to treat the patient."},
+                "role": m["role"], "content": m["content"]}
             for m in st.session_state.messages
         ]
     )
