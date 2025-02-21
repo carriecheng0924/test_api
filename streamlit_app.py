@@ -38,15 +38,14 @@ if prompt := st.chat_input("What's up?"):
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    st.warning([{"role": m["role"], "content": m["content"]}
-                for m in st.session_state.messages])
-
     step1 = client.chat.completions.create(
         model="ft:gpt-4o-2024-08-06:personal::B3Wn4Vw9",
-        messages=[
-            {"role": "system", "content": "You are a therapist that decides which therapy strategy to treat the patient."},
-            {"role": st.session_state.messages[1]["role"], "content": st.session_state.messages[1]["content"]}
-            # for m in st.session_state.messages[1]
+        messages= [
+            {"role": "system", "content": "You are a therapist that decides which therapy strategy to treat the patient."}
+        ] +
+        [
+            {"role": m["role"], "content": m["content"]}
+            for m in st.session_state.messages
         ]
     )
 
