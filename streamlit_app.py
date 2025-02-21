@@ -49,7 +49,6 @@ if prompt := st.chat_input("What's up?"):
         ]
     )
 
-    st.warning(step1.choices[0].to_dict()['message']['content'])
 
     if step1.choices[0].to_dict()['message']['content'] == "choice1":
 
@@ -57,6 +56,9 @@ if prompt := st.chat_input("What's up?"):
         stream = client.chat.completions.create(
             model="ft:gpt-4o-2024-08-06:personal::B3HVAHhr",
             messages=[
+                {"role": "system", "content": "You are a therapist to address patient emotions. You should help patient understand his emotional and mental status."}
+            ] +
+            [
                 {"role": m["role"], "content": m["content"]}
                 for m in st.session_state.messages
             ],
@@ -67,6 +69,9 @@ if prompt := st.chat_input("What's up?"):
         stream = client.chat.completions.create(
             model="ft:gpt-4o-2024-08-06:personal::B3Sbf3WW",
             messages=[
+                {"role": "system", "content": "You are a therapist to address patient emotions. You should help patient understand his emotional and mental status."}
+            ] +
+            [
                 {"role": m["role"], "content": m["content"]}
                 for m in st.session_state.messages
             ],
@@ -78,6 +83,9 @@ if prompt := st.chat_input("What's up?"):
         stream = client.chat.completions.create(
             model="gpt-4o-2024-08-06",
             messages=[
+                {"role": "system", "content": "You are a therapist to address patient emotions. You should help patient understand his emotional and mental status."}
+            ]+
+            [
                 {"role": m["role"], "content": m["content"]}
                 for m in st.session_state.messages
             ],
