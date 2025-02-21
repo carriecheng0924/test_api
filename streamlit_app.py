@@ -40,7 +40,7 @@ if prompt := st.chat_input("What is up?"):
 
     # Generate a response using the OpenAI API.
     stream = client.chat.completions.create(
-        model="gpt-4o",
+        model="ft:gpt-4o-2024-08-06:personal::B3HVAHhr",
         messages=[
             {"role": m["role"], "content": m["content"]}
             for m in st.session_state.messages
