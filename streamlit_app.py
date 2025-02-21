@@ -1,6 +1,6 @@
 # Code refactored from https://docs.streamlit.io/knowledge-base/tutorials/build-conversational-apps
 
-import openai
+from openai import OpenAI
 import streamlit as st
 
 openai_api_key = st.secrets['OPENAI_API_KEY']
