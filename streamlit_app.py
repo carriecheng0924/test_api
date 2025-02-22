@@ -2,8 +2,13 @@
 
 from openai import OpenAI
 import streamlit as st
+from transformers import AutoTokenizer, AutoModelForMultipleChoice
+import torch
 
 openai_api_key = st.secrets['OPENAI_API_KEY']
+models = ["ft:gpt-4o-2024-08-06:personal::B3HVAHhr", 
+          "ft:gpt-4o-2024-08-06:personal::B3Sbf3WW",
+         "gpt-4o-2024-08-06"]
 # with st.sidebar:
 #     st.title('🤖💬 OpenAI Chatbot')
 #     if 'OPENAI_API_KEY' in st.secrets:
@@ -40,24 +45,51 @@ if prompt := st.chat_input("What's up?"):
 
     st.warning([{"role": m["role"], "content": m["content"]}
             for m in st.session_state.messages])
-    
+
+    # sample from 3 models and use the reward function to determine which one could yield the largest reward
     if len(st.session_state.messages) == 1:
-        step1 = client.chat.completions.create(
-            model="ft:gpt-4o-2024-08-06:personal::B3Wn4Vw9",
-            messages= [
-                {"role": "system", "content": "You are a therapist that decides which therapy strategy to treat the patient."}
+        # step1 = client.chat.completions.create(
+        #     model="ft:gpt-4o-2024-08-06:personal::B3Wn4Vw9",
+        #     messages= [
+        #         {"role": "system", "content": "You are a therapist that decides which therapy strategy to treat the patient."}
+        #     ] +
+        #     [
+        #         {"role": m["role"], "content": m["content"]}
+        #         for m in st.session_state.messages
+        #     ]
+        # )
+
+        samples = []
+        for m in models:
+            stream = client.chat.completions.create(
+            model=m,
+            messages=[
+                {"role": "system", "content": "You are a therapist to address patient emotions. You should help patient understand his emotional and mental status."}
             ] +
             [
                 {"role": m["role"], "content": m["content"]}
                 for m in st.session_state.messages
-            ]
+            ],
+            # stream=True,
         )
+            samples += [stream]
+
+        prompt_content = zip(st.session_state.messages * len(models), samples)
+        
+        tokenizer = AutoTokenizer.from_pretrained("carriecheng0924/test")
+        inputs = tokenizer([["I need a mental therapy." + message["content"], [sample]] for message, sample in prompt_content], return_tensors="pt", padding=True)
+        labels = torch.tensor(0).unsqueeze(0)
+        model = AutoModelForMultipleChoice.from_pretrained("carriecheng0924/test")
+        outputs = model(**{k: v.unsqueeze(0) for k, v in inputs.items()}, labels=labels)
+        logits = outputs.logits
+        predicted_class = logits.argmax().item()
         # To store value of first step
         if "step1" not in st.session_state:
-            st.session_state.step1 = step1.choices[0].to_dict()['message']['content']
+            # st.session_state.step1 = step1.choices[0].to_dict()['message']['content']
+            st.session_state.step1 = predicted_class
 
     st.warning(st.session_state.step1)
-    if st.session_state.step1 == "choice1":
+    if st.session_state.step1 == 0:
 
         # Generate a response using the OpenAI API.
         stream = client.chat.completions.create(
@@ -71,7 +103,7 @@ if prompt := st.chat_input("What's up?"):
             ],
             stream=True,
         )
-    elif st.session_state.step1 == "choice2":
+    elif st.session_state.step1 == 1:
         # Generate a response using the OpenAI API.
         stream = client.chat.completions.create(
             model="ft:gpt-4o-2024-08-06:personal::B3Sbf3WW",
