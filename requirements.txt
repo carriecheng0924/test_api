@@ -4,4 +4,4 @@ torch
 datasets 
 evaluate 
 accelerate
-https://github.com/huggingface/transformers.git/transformers
+git+https://github.com/huggingface/transformers
