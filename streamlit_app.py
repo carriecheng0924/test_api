@@ -38,6 +38,9 @@ if prompt := st.chat_input("What's up?"):
     with st.chat_message("user"):
         st.markdown(prompt)
 
+    st.warning([{"role": m["role"], "content": m["content"]}
+            for m in st.session_state.messages])
+
     step1 = client.chat.completions.create(
         model="ft:gpt-4o-2024-08-06:personal::B3Wn4Vw9",
         messages= [
@@ -49,7 +52,7 @@ if prompt := st.chat_input("What's up?"):
         ]
     )
 
-
+    st.warning(step1.choices[0].to_dict()['message']['content'])
     if step1.choices[0].to_dict()['message']['content'] == "choice1":
 
         # Generate a response using the OpenAI API.
