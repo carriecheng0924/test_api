@@ -31,6 +31,7 @@ for message in st.session_state.messages:
 
 # Create a chat input field to allow the user to enter a message. This will display
 # automatically at the bottom of the page.
+i = 0
 if prompt := st.chat_input("What's up?"):
 
     # Store and display the current prompt.
@@ -40,17 +41,17 @@ if prompt := st.chat_input("What's up?"):
 
     st.warning([{"role": m["role"], "content": m["content"]}
             for m in st.session_state.messages])
-
-    step1 = client.chat.completions.create(
-        model="ft:gpt-4o-2024-08-06:personal::B3Wn4Vw9",
-        messages= [
-            {"role": "system", "content": "You are a therapist that decides which therapy strategy to treat the patient."}
-        ] +
-        [
-            {"role": m["role"], "content": m["content"]}
-            for m in st.session_state.messages
-        ]
-    )
+    if i == 0:
+        step1 = client.chat.completions.create(
+            model="ft:gpt-4o-2024-08-06:personal::B3Wn4Vw9",
+            messages= [
+                {"role": "system", "content": "You are a therapist that decides which therapy strategy to treat the patient."}
+            ] +
+            [
+                {"role": m["role"], "content": m["content"]}
+                for m in st.session_state.messages
+            ]
+        )
 
     st.warning(step1.choices[0].to_dict()['message']['content'])
     if step1.choices[0].to_dict()['message']['content'] == "choice1":
@@ -100,3 +101,4 @@ if prompt := st.chat_input("What's up?"):
     with st.chat_message("assistant"):
         response = st.write_stream(stream)
     st.session_state.messages.append({"role": "assistant", "content": response})
+    i += 1
