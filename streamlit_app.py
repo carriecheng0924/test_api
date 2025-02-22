@@ -72,22 +72,22 @@ if prompt := st.chat_input("What's up?"):
             ],
             # stream=True,
         )
-            samples += [stream]
+            samples += [stream.choices[0].to_dict()['message']['content']]
 
         prompt_content = zip(st.session_state.messages * len(models), samples)
         st.warning(list(prompt_content))
-        # tokenizer = AutoTokenizer.from_pretrained("carriecheng0924/test")
-        # inputs = tokenizer([["I need a mental therapy." + message["content"], [sample]] for message, sample in prompt_content], return_tensors="pt", padding=True)
-        # labels = torch.tensor(0).unsqueeze(0)
-        # model = AutoModelForMultipleChoice.from_pretrained("carriecheng0924/test")
-        # outputs = model(**{k: v.unsqueeze(0) for k, v in inputs.items()}, labels=labels)
-        # logits = outputs.logits
-        # predicted_class = logits.argmax().item()
+        tokenizer = AutoTokenizer.from_pretrained("carriecheng0924/test")
+        inputs = tokenizer([["I need a mental therapy." + message["content"], [sample]] for message, sample in prompt_content], return_tensors="pt", padding=True)
+        labels = torch.tensor(0).unsqueeze(0)
+        model = AutoModelForMultipleChoice.from_pretrained("carriecheng0924/test")
+        outputs = model(**{k: v.unsqueeze(0) for k, v in inputs.items()}, labels=labels)
+        logits = outputs.logits
+        predicted_class = logits.argmax().item()
         # To store value of first step
         if "step1" not in st.session_state:
             # st.session_state.step1 = step1.choices[0].to_dict()['message']['content']
-            # st.session_state.step1 = predicted_class
-                  st.session_state.step1 = 0
+            st.session_state.step1 = predicted_class
+                  # st.session_state.step1 = 0
 
     st.warning(st.session_state.step1)
     if st.session_state.step1 == 0:
