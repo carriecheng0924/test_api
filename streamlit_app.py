@@ -52,9 +52,12 @@ if prompt := st.chat_input("What's up?"):
                 for m in st.session_state.messages
             ]
         )
+        # To store value of first step
+        if "step1" not in st.session_state:
+            st.session_state.step1 = step1.choices[0].to_dict()['message']['content']
 
-    st.warning(step1.choices[0].to_dict()['message']['content'])
-    if step1.choices[0].to_dict()['message']['content'] == "choice1":
+    st.warning(st.session_state.step1)
+    if st.session_state.step1 == "choice1":
 
         # Generate a response using the OpenAI API.
         stream = client.chat.completions.create(
@@ -68,7 +71,7 @@ if prompt := st.chat_input("What's up?"):
             ],
             stream=True,
         )
-    elif step1.choices[0].to_dict()['message']['content'] == "choice2":
+    elif st.session_state.step1 == "choice2":
         # Generate a response using the OpenAI API.
         stream = client.chat.completions.create(
             model="ft:gpt-4o-2024-08-06:personal::B3Sbf3WW",
