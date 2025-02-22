@@ -75,7 +75,7 @@ if prompt := st.chat_input("What's up?"):
             samples += [stream.choices[0].to_dict()['message']['content']]
 
         prompt_content = zip(st.session_state.messages * len(models), samples)
-        st.warning(list(prompt_content))
+        st.warning([["I need a mental therapy." + message["content"], [sample]] for message, sample in prompt_content])
         tokenizer = AutoTokenizer.from_pretrained("carriecheng0924/test")
         inputs = tokenizer([["I need a mental therapy." + message["content"], [sample]] for message, sample in prompt_content], return_tensors="pt", padding=True)
         labels = torch.tensor(0).unsqueeze(0)
