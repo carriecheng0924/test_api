@@ -4,7 +4,10 @@ from openai import OpenAI
 import streamlit as st
 from transformers import AutoTokenizer, AutoModelForMultipleChoice
 import torch
+import os
 
+hf_token = st.secrets["HUGGINGFACE_TOKEN"]
+os.environ["HUGGINGFACEHUB_API_TOKEN"] = hf_token
 openai_api_key = st.secrets['OPENAI_API_KEY']
 models = ["ft:gpt-4o-2024-08-06:personal::B3HVAHhr", 
           "ft:gpt-4o-2024-08-06:personal::B3Sbf3WW",
