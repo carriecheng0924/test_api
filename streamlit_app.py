@@ -14,7 +14,7 @@ models = ["ft:gpt-4o-2024-08-06:personal::B3HVAHhr",
 
 # tokenizer = AutoTokenizer.from_pretrained("carriecheng0924/test")
 # model = AutoModelForMultipleChoice.from_pretrained("carriecheng0924/test")
-classifier = pipeline("text-classification", model="rafalposwiata/deproberta-large-depression")
+classifier = pipeline("text-classification", model="paulagarciaserrano/roberta-depression-detection")
 # with st.sidebar:
 #     st.title('🤖💬 OpenAI Chatbot')
 #     if 'OPENAI_API_KEY' in st.secrets:
