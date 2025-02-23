@@ -2,8 +2,8 @@
 
 from openai import OpenAI
 import streamlit as st
-# from transformers import AutoTokenizer, AutoModelForMultipleChoice
-from transformers import pipeline
+from transformers import AutoTokenizer, AutoModelForMultipleChoice
+# from transformers import pipeline
 import torch
 import os
 
@@ -12,8 +12,8 @@ models = ["ft:gpt-4o-2024-08-06:personal::B3HVAHhr",
           "ft:gpt-4o-2024-08-06:personal::B3Sbf3WW",
          "gpt-4o-2024-08-06"]
 
-# tokenizer = AutoTokenizer.from_pretrained("carriecheng0924/test")
-# model = AutoModelForMultipleChoice.from_pretrained("carriecheng0924/test")
+tokenizer = AutoTokenizer.from_pretrained("carriecheng0924/test")
+model = AutoModelForMultipleChoice.from_pretrained("carriecheng0924/test")
 # classifier = pipeline("text-classification", model="paulagarciaserrano/roberta-depression-detection")
 # with st.sidebar:
 #     st.title('🤖💬 OpenAI Chatbot')
@@ -65,28 +65,28 @@ if prompt := st.chat_input("What's up?"):
         #     ]
         # )
 
-        # samples = []
-        # for m in models:
-        #     stream = client.chat.completions.create(
-        #     model=m,
-        #     messages=[
-        #         {"role": "system", "content": "You are a therapist to address patient emotions. You should help patient understand his emotional and mental status."}
-        #     ] +
-        #     [
-        #         {"role": m["role"], "content": m["content"]}
-        #         for m in st.session_state.messages
-        #     ],
-        #     # stream=True,
-        # )
-        #     samples += [stream.choices[0].to_dict()['message']['content']]
+        samples = []
+        for m in models:
+            stream = client.chat.completions.create(
+            model=m,
+            messages=[
+                {"role": "system", "content": "You are a therapist to address patient emotions. You should help patient understand his emotional and mental status."}
+            ] +
+            [
+                {"role": m["role"], "content": m["content"]}
+                for m in st.session_state.messages
+            ],
+            # stream=True,
+        )
+            samples += [stream.choices[0].to_dict()['message']['content']]
 
-        # prompt_content = zip(st.session_state.messages * len(models), samples)
-        # st.warning([["I need a mental therapy." + message["content"], sample] for message, sample in prompt_content])
-        # inputs = tokenizer([["I need a mental therapy." + message["content"], sample] for message, sample in prompt_content], return_tensors="pt", padding=True)
-        # labels = torch.tensor(0).unsqueeze(0)
-        # outputs = model(**{k: v.unsqueeze(0) for k, v in inputs.items()}, labels=labels)
-        # logits = outputs.logits
-        # predicted_class = logits.argmax().item()
+        prompt_content = zip(st.session_state.messages * len(models), samples)
+        st.warning([["I need a mental therapy." + message["content"], sample] for message, sample in prompt_content])
+        inputs = tokenizer([["I need a mental therapy." + message["content"], sample] for message, sample in prompt_content], return_tensors="pt", padding=True)
+        labels = torch.tensor(0).unsqueeze(0)
+        outputs = model(**{k: v.unsqueeze(0) for k, v in inputs.items()}, labels=labels)
+        logits = outputs.logits
+        predicted_class = logits.argmax().item()
         # current_mssg = [m["content"] for m in st.session_state.messages if m["role"] == 'user']
         # predicted_class = classifier(current_mssg)[0]['label']
         # To store value of first step
