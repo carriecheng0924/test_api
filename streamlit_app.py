@@ -14,7 +14,7 @@ models = ["ft:gpt-4o-2024-08-06:personal::B3HVAHhr",
 
 # tokenizer = AutoTokenizer.from_pretrained("carriecheng0924/test")
 # model = AutoModelForMultipleChoice.from_pretrained("carriecheng0924/test")
-classifier = pipeline("text-classification", model="paulagarciaserrano/roberta-depression-detection")
+# classifier = pipeline("text-classification", model="paulagarciaserrano/roberta-depression-detection")
 # with st.sidebar:
 #     st.title('🤖💬 OpenAI Chatbot')
 #     if 'OPENAI_API_KEY' in st.secrets:
@@ -87,8 +87,8 @@ if prompt := st.chat_input("What's up?"):
         # outputs = model(**{k: v.unsqueeze(0) for k, v in inputs.items()}, labels=labels)
         # logits = outputs.logits
         # predicted_class = logits.argmax().item()
-        current_mssg = [m["content"] for m in st.session_state.messages if m["role"] == 'user']
-        predicted_class = classifier(current_mssg)[0]['label']
+        # current_mssg = [m["content"] for m in st.session_state.messages if m["role"] == 'user']
+        # predicted_class = classifier(current_mssg)[0]['label']
         # To store value of first step
         if "step1" not in st.session_state:
             # st.session_state.step1 = step1.choices[0].to_dict()['message']['content']
