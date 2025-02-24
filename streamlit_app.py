@@ -80,7 +80,7 @@ scenario3 = st.text_input("Imagine that you are at a keynote event listening to 
 # inputs = [age_info, gender_info, sleep_duration, sleep_quality, med_hist_info, status_info]
 # yesorno = [(has_physical_activity, not_has_physical_activity), (is_alcohol, is_not_alcohol)]
 
-if not scenario1 or not scenario1 or not scenario1:
+if not scenario1 or not scenario2 or not scenario3:
         st.info("Please fill in all the questions!")
 else:
 
