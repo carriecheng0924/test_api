@@ -6,4 +6,4 @@ evaluate
 accelerate
 nltk
 numpy<2
-git+https://github.com/huggingface/transformers
+transformers
