@@ -208,7 +208,7 @@ else:
         with st.chat_message("user"):
             st.markdown(prompt) 
         
-        # st.warning(st.session_state.rate)
+        st.warning(st.session_state.status)
         # give technique 1 if sentiment predicted to be anxiety, depression, stress
         if st.session_state.status in [0, 2, 5]:
 
