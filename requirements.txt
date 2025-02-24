@@ -1,4 +1,9 @@
 streamlit
 openai
 torch
+datasets 
+evaluate 
+accelerate
+nltk
+numpy<2
 git+https://github.com/huggingface/transformers
